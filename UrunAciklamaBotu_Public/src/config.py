@@ -10,7 +10,8 @@ BRAND_PRIMARY_COLOR = "#E07B00"
 BRAND_DARK_BG = "#0B0F19"
 
 # Görsel Yolları
-LOGO_PATH = os.path.join("assets", "UAB.png")
+LOGO_PATH = os.path.join("assets", "UAB2.jpg")
+BANNER_PATH = os.path.join("assets", "UAB-anasay.jpg")
 
 # ==============================================================================
 # PROMPT ŞABLON REHBERİ (PROMPT TEMPLATE GUIDE)
