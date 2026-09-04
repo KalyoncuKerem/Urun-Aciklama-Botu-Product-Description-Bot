@@ -6,13 +6,16 @@ import streamlit.components.v1 as components
 import os
 import base64
 from src.config import APP_TITLE, APP_SUBTITLE, LOGO_PATH
+from src.i18n import get_text
 
-def load_image_as_base64(path: str) -> str:
-    """Görsel dosyasını base64 formatına çevirir (HTML embed için)."""
+def load_image_as_base64(path: str) -> tuple:
+    """Görsel dosyasını ve mime türünü base64 formatında döndürür."""
     if os.path.exists(path):
+        ext = os.path.splitext(path)[1].lower().replace('.', '')
+        mime = "image/jpeg" if ext in ["jpg", "jpeg"] else f"image/{ext}"
         with open(path, "rb") as image_file:
-            return base64.b64encode(image_file.read()).decode('utf-8')
-    return ""
+            return base64.b64encode(image_file.read()).decode('utf-8'), mime
+    return "", "image/png"
 
 def inject_custom_css():
     """
@@ -210,41 +213,50 @@ def inject_custom_css():
     """
     st.markdown(custom_css, unsafe_allow_html=True)
 
-def render_hero_header():
+def render_hero_header(lang: str = "TR"):
     """Uygulama üst kısmındaki modern Glassmorphic Hero Banner'ı çizer."""
-    logo_base64 = load_image_as_base64(LOGO_PATH)
-    img_html = f'<img src="data:image/png;base64,{logo_base64}" class="hero-logo" alt="Logo">' if logo_base64 else ''
+    logo_base64, mime_type = load_image_as_base64(LOGO_PATH)
+    img_html = f'<img src="data:{mime_type};base64,{logo_base64}" class="hero-logo" alt="Logo">' if logo_base64 else ''
+
+    title = get_text("app_title", lang)
+    subtitle = get_text("app_subtitle", lang)
+    badge = get_text("badge", lang)
 
     header_html = f"""
     <div class="hero-container">
         {img_html}
         <div class="hero-title-group">
-            <h1>{APP_TITLE} <span class="badge-v2">Open-Source</span></h1>
-            <p>{APP_SUBTITLE}</p>
+            <h1>{title} <span class="badge-v2">{badge}</span></h1>
+            <p>{subtitle}</p>
         </div>
     </div>
     """
     st.markdown(header_html, unsafe_allow_html=True)
 
-def render_metric_cards(total_rows: int, processed_rows: int, success_count: int, error_count: int):
+def render_metric_cards(total_rows: int, processed_rows: int, success_count: int, error_count: int, lang: str = "TR"):
     """İşlem istatistiklerini kart şeklinde gösterir."""
+    lbl_total = get_text("metric_total", lang)
+    lbl_processed = get_text("metric_processed", lang)
+    lbl_success = get_text("metric_success", lang)
+    lbl_error = get_text("metric_error", lang)
+
     html_metrics = f"""
     <div class="metric-container">
         <div class="metric-card">
             <div class="metric-value">{total_rows}</div>
-            <div class="metric-label">Toplam Satır</div>
+            <div class="metric-label">{lbl_total}</div>
         </div>
         <div class="metric-card">
             <div class="metric-value" style="color: #38BDF8;">{processed_rows}</div>
-            <div class="metric-label">İşlenen</div>
+            <div class="metric-label">{lbl_processed}</div>
         </div>
         <div class="metric-card">
             <div class="metric-value" style="color: #4ADE80;">{success_count}</div>
-            <div class="metric-label">Başarılı</div>
+            <div class="metric-label">{lbl_success}</div>
         </div>
         <div class="metric-card">
             <div class="metric-value" style="color: #F87171;">{error_count}</div>
-            <div class="metric-label">Hata</div>
+            <div class="metric-label">{lbl_error}</div>
         </div>
     </div>
     """
