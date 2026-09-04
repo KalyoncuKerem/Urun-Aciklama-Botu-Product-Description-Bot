@@ -6,8 +6,10 @@ import os
 APP_TITLE = "Ürün Açıklama Dönüştürücü"
 APP_SUBTITLE = "E-ticaret ürün teknik detaylarını SEO uyumlu, estetik Tailwind HTML şablonlarına çevirin."
 BRAND_NAME = "E-Ticaret Botu"
-BRAND_PRIMARY_COLOR = "#E07B00"
-BRAND_DARK_BG = "#0B0F19"
+BRAND_PRIMARY_COLOR = "#ff9610"
+BRAND_SECONDARY_COLOR = "#009cf3"
+BRAND_DARK_BG = "#0B0F17"
+BRAND_SURFACE_BG = "#131B2A"
 
 # Görsel Yolları
 LOGO_PATH = os.path.join("assets", "UAB.png")
