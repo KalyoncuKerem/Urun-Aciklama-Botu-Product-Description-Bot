@@ -60,19 +60,16 @@ def inject_custom_css():
         color: var(--text-primary);
     }}
 
-    /* Streamlit varsayılan gereksiz menülerini ve Deploy butonunu gizleme */
-    #MainMenu {{visibility: hidden !important; display: none !important;}}
-    footer {{visibility: hidden !important; display: none !important;}}
+    /* Streamlit varsayılan menüsü, deploy butonu ve sağ araç çubuğu aksiyonlarını gizleme */
+    #MainMenu,
+    footer,
     .stDeployButton,
     [data-testid="stDeployButton"],
     [data-testid="stAppDeployButton"],
     div[class*="stDeployButton"],
     div[data-testid="stToolbarActions"],
     header[data-testid="stHeader"] [data-testid="stToolbarActions"],
-    header[data-testid="stHeader"] [data-testid="stToolbar"],
-    header[data-testid="stHeader"] button[kind="header"],
-    header[data-testid="stHeader"] div:has(> button[data-testid*="header"]),
-    .stAppToolbar {{
+    [data-testid="stDecoration"] {{
         display: none !important;
         visibility: hidden !important;
         opacity: 0 !important;
@@ -102,19 +99,30 @@ def inject_custom_css():
         background-attachment: fixed !important;
     }}
 
-    /* Header Arka Planını Şeffaf Yap */
+    /* Header & Toolbar Şeffaflığı ve Etkileşimi */
     header[data-testid="stHeader"] {{
         background: transparent !important;
         z-index: 99999 !important;
+        pointer-events: none !important;
+    }}
+
+    header[data-testid="stHeader"] [data-testid="stToolbar"],
+    .stAppToolbar {{
+        background: transparent !important;
+        pointer-events: none !important;
+        visibility: visible !important;
+        display: flex !important;
     }}
 
     /* Sidebar Açma/Kapatma Butonunu DAİMA GÖRÜNÜR ve ŞIK Yap */
     [data-testid="stSidebarCollapseButton"], 
+    [data-testid="stExpandSidebarButton"],
+    [data-testid="stSidebarCollapsedControl"],
     button[aria-label="Expand sidebar"], 
     button[aria-label="Collapse sidebar"],
     [data-testid="collapsedControl"] {{
         visibility: visible !important;
-        display: flex !important;
+        display: inline-flex !important;
         align-items: center !important;
         justify-content: center !important;
         color: var(--brand-orange) !important;
@@ -124,14 +132,45 @@ def inject_custom_css():
         box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4) !important;
         transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
         z-index: 100000 !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        cursor: pointer !important;
+    }}
+
+    [data-testid="stExpandSidebarButton"],
+    button[data-testid="stExpandSidebarButton"] {{
+        margin: 10px 0 0 16px !important;
+        width: 38px !important;
+        height: 38px !important;
+    }}
+
+    [data-testid="stSidebarCollapseButton"] button {{
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        color: inherit !important;
+        cursor: pointer !important;
     }}
 
     [data-testid="stSidebarCollapseButton"]:hover,
-    [data-testid="collapsedControl"]:hover {{
+    [data-testid="stExpandSidebarButton"]:hover,
+    button[data-testid="stExpandSidebarButton"]:hover,
+    [data-testid="stSidebarCollapsedControl"]:hover,
+    [data-testid="collapsedControl"]:hover,
+    button[aria-label="Expand sidebar"]:hover,
+    button[aria-label="Collapse sidebar"]:hover {{
         background: var(--brand-orange) !important;
         color: #0c1017 !important;
         transform: scale(1.06);
         box-shadow: 0 6px 20px rgba(255, 150, 16, 0.4) !important;
+    }}
+
+    [data-testid="stSidebarCollapseButton"] span,
+    [data-testid="stSidebarCollapseButton"] svg,
+    [data-testid="stExpandSidebarButton"] span,
+    [data-testid="stExpandSidebarButton"] svg {{
+        color: inherit !important;
+        fill: currentColor !important;
     }}
 
     /* Sidebar Genel Tasarımı */
